@@ -1,0 +1,26 @@
+We can use JOIN argument to combine information from two tables into one, using a shared column. 
+
+
+-- find all branches and the names of their managers
+-- in this case, we are selecting employee id, first name, and branch name. 
+-- from two tables, employee table, and branch table (using join).
+-- the ON argument specifies which two columns are the ones that are shared between the tables. 
+-- USING REGULAR JOIN will ONLY DISPLAY ROWS WITH NO NULL VALUES
+SELECT employee.emp_id, employee.first_name, branch.branch_name 
+FROM employee
+JOIN branch
+ON employee.emp_id = branch.mgr_id
+
+-- left join uses all rows from the left table (the one in the FROM argument)
+-- this will display all of the employee names and ids, regardless of if they have branch names associated. 
+SELECT employee.emp_id, employee.first_name, branch.branch_name 
+FROM employee
+LEFT JOIN branch
+ON employee.emp_id = branch.mgr_id
+
+-- right join uses all rows from the right table (the one in the RIGHT JOIN argument)
+-- this will dispaly all of the branch names, regardless of if they have a employee id or name associated with it. 
+SELECT employee.emp_id, employee.first_name, branch.branch_name 
+FROM employee
+RIGHT JOIN branch
+ON employee.emp_id = branch.mgr_id

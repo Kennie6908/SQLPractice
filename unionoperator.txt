@@ -1,0 +1,21 @@
+If we want to display multiple columns at the same time in the same column, we can use the UNION argument. 
+First, select something, use UNION, then select the other desired column from whatever table. 
+Make sure to use tablename.columnName when you are selecting two columns with the same names. This is proper code. 
+
+-- find all names
+SELECT first_name AS Company_Names FROM employee
+UNION
+SELECT branch_name FROM branch
+UNION
+SELECT client_name FROM client; 
+
+-- find a list of all clients and branches
+-- use tablename.branch_id to avoid confusion when there are two same names! 
+SELECT client_name, client.branch_id FROM client
+UNION
+SELECT supplier_name, branch_supplier.branch_id FROM branch_supplier; 
+
+-- find a list of all money spent or earned by the company
+SELECT salary FROM employee 
+UNION 
+SELECT total_sales FROM works_with; 

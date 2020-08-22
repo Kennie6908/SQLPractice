@@ -1,0 +1,17 @@
+Wildcards are basically regex statements, used with the LIKE command to find queries. 
+% = any # characters, _ = one character
+ex. to find 'manchester', '%chester' or '___chester' are two ways to find it. 
+
+-- Find any client's who are an LLC
+SELECT * FROM client WHERE client_name LIKE '%LLC'
+-- looks for a pattern in client_name, where there are a number of characters before 'LLC'
+
+-- find any branch suppliers wh are in the label business
+SELECT * FROM branch_supplier WHERE supplier_name LIKE '%Label%';
+-- looks for the pattern of characters before and after 'Label'
+
+-- find any employee born in October
+SELECT * FROM employee WHERE birth_day LIKE '____-10%';
+
+-- find all clients who are schools
+SELECT * FROM client WHERE client_name LIKE '%school%'

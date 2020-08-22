@@ -1,0 +1,64 @@
+Triggers are events that occur when another event occurs. 
+Used to automate things. 
+
+-- first, we need to set a new delimeter, since is we use semicolon, SQL cannot tell 
+-- where the end of our trigger is. 
+DELIMETER $$
+
+-- then we call CREATE TRIGGER 'triggername' and the event (BEFORE INSERT ON employee table)
+CREATE
+    TRIGGER my_trigger BEFORE INSERT
+    ON employee
+    
+    -- for each of the new items (for each row begin), do something. In this case, 
+    -- we are inserting the phrase 'added new employee' into a trigger_test table. 
+    FOR EACH ROW BEGIN
+        INSERT INTO trigger_test VALUES('added new employee');
+    
+    -- end the trigger using our newly defined delimeter. 
+    END$$
+    
+-- reset the delimeter back to a semicolon. 
+DELIMETER ; 
+
+
+Actual code: 
+DELIMETER $$
+CREATE
+    TRIGGER my_trigger BEFORE INSERT
+    ON employee
+    FOR EACH ROW BEGIN
+        INSERT INTO trigger_test VALUES('added new employee');
+    END$$
+DELIMETER ; 
+
+Another Example: 
+DELIMETER $$
+CREATE
+    TRIGGER my_trigger1 BEFORE INSERT
+    ON employee
+    FOR EACH ROW BEGIN
+        -- we use NEW.attribute to refer to the item that is being added. THIS IS IMPORTANT! 
+        INSERT INTO trigger_test VALUES(NEW.first_name);
+    END$$
+DELIMETER ; 
+
+One more example using logic: 
+-- BE CAREFUL WITH SYNTAX! IF, ELSEIF, ELSE, and END IF, with semicolons at the end of each insert into and end if. 
+DELIMETER $$
+CREATE
+    TRIGGER my_trigger1 BEFORE INSERT
+    ON employee
+    FOR EACH ROW BEGIN
+        IF NEW.sex = 'M' THEN
+            INSERT INTO trigger_test VALUES('added male employee');
+        ELSEIF NEW.sex = 'F' THEN   
+            INSERT INTO trigger_test VALUES('added female');
+        ELSE
+            INSERT INTO trigger_test VALUES('added other');
+        END IF; 
+    END$$
+DELIMETER ; 
+
+
+To delete trigger, use DROP TRIGGER 'triggername'; 

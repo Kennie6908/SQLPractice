@@ -1,0 +1,105 @@
+# Deletes the entire current table
+DROP TABLE student; 
+
+# Creates a new table called student, with three column names. 
+# must specify data type for each column (int, decimal, varchar(number of chars), date)
+# also can have arguments for each column --> primary key, auto increment, not null, unique, default... 
+# MUST SPECIFY A PRIMARY KEY! 
+CREATE TABLE student (
+    student_id INT PRIMARY KEY AUTO_INCREMENT, 
+    name VARCHAR(20) NOT NULL, 
+    major VARCHAR(20) DEFAULT 'undecided'
+); 
+
+# to have multiple primary keys, create columns then use PRIMARY KEY ('columnName', 'columnName')
+CREATE TABLE works_with (
+    emp_id INT, 
+    client_id INT,
+    PRIMARY KEY(emp_id, client_id)
+);
+
+# to insert values into a table, use insert into 'tablename' VALUES(); 
+# can specify which specific values to insert by using the column name
+INSERT INTO student VALUES(1, 'Jack', 'Biology');
+INSERT INTO student(name, major) VALUES('Kate', 'Sociology');
+INSERT INTO student VALUES(3, 'Chris', 'Chemistry');
+
+# to update values, use UPDATE 'tablename'
+# then use set and the column name to whatever you want the changed value to be. 
+# then use WHERE to specify the conditions of what to replace. 
+# Can use OR and AND logic for the conditions. 
+UPDATE student
+SET major = 'Biochemistry'
+WHERE major = 'Chemistry' OR major = 'Biology';
+
+# When updating, can also set multiple things at the same time using a comma. 
+UPDATE student
+SET name = 'Tom', major = 'Undecided'
+WHERE student_id = 3; 
+
+# if WHERE is not given, update and set will change all rows of the table. 
+UPDATE student
+SET major = 'undecided'
+
+# to delete values, use DELETE FROM 'tablename' along with WHERE statement. 
+DELETE FROM student
+WHERE student_id = 5 AND major = 'undecided'; 
+
+# if where is not given, entire table rows will be deleted.  
+DELETE FROM student; 
+
+# queries using select 
+# to select and return everything (*)
+SELECT * FROM student;
+
+# to select a specific column
+SELECT name, major FROM student; 
+
+# to sort column, select the column from the table, then use ORDER BY 'columnname'
+SELECT name, major FROM student ORDER BY name; 
+SELECT name, major FROM student ORDER BY name ASC; 
+SELECT name, major FROM student ORDER BY name DESC; 
+
+# can also sort by multiple conditions. This will sort by major first, then will sort the names of those with the same majors. 
+SELECT * FROM student ORDER BY major, student_name; 
+
+# to limit the amount of selections, use LIMIT # desired
+SELECT * FROM student LIMIT 2; 
+
+# can use select with a where statement to get back items that meet certain conditions
+SELECT name, major FROM student WHERE major = 'Chemistry' OR name = 'Kate';
+
+# to find a certain string using a where statement, use IN
+SELECT * FROM student WHERE name IN ('Claire', 'Kate');
+SELECT * FROM student WHERE major IN ('Biology') AND student_id > 2; 
+
+
+
+# creating more complex tables
+# to create a foreign key, use FOREIGN_KEY
+# this creates a mgr_id, identifies it as a foreign key, and connects it to emp_id on the employee table. 
+CREATE TABLE branch (
+  branch_id INT PRIMARY KEY,
+  mgr_id INT,
+  FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE SET NULL
+);
+
+# careful about syntax, after REFERENCES --> tablename('columnName')
+
+# to change a key to be a foreign key, alter table
+# this change the employee table's branch_id, makes it a foreign key and connects it to branch_id on the branch table. 
+ALTER TABLE employee
+ADD FOREIGN KEY(branch_id)
+REFERENCES branch(branch_id)
+ON DELETE SET NULL;
+
+
+# to rename column just when you are querying, use SELECT 'columnName' AS 'desiredcolumnName'
+
+# to get only unique values in a column, use DISTINCT
+SELECT DISTINCT sex FROM employee; 
+SELECT DISTINCT colleges from collegetable; 
+
+
+
+

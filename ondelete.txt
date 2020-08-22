@@ -1,0 +1,28 @@
+-- ON DELETE --> either set null or cascade 
+
+-- ON DELETE SET NULL sets null wherever the foreign key used to be. 
+-- a single entry change, from the value --> null everywhere. 
+CREATE TABLE branch (
+  branch_id INT PRIMARY KEY,
+  branch_name VARCHAR(40),
+  mgr_id INT,
+  mgr_start_date DATE,
+  FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE SET NULL
+);
+
+-- delete statement using DELETE FROM
+DELETE FROM employee
+WHERE emp_id = 102;
+
+-- ON DELETE CASCADE deletes entire rows that have the deleted foreign key. 
+-- multi-value change. Doesn't only delete your value, but other values in its row. 
+CREATE TABLE branch (
+  branch_id INT PRIMARY KEY,
+  branch_name VARCHAR(40),
+  mgr_id INT,
+  mgr_start_date DATE,
+  FOREIGN KEY(mgr_id) REFERENCES employee(emp_id) ON DELETE CASCADE
+);
+
+-- use on delete set null when a null value isn't crucial to the table. 
+-- when a null value is crucial, meaning it breaks the data and its meaning, use cascade to quickly clear rows. 

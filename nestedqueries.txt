@@ -1,0 +1,24 @@
+Can use nested queries to provide parameters for another query. 
+
+-- find names of all employees who have sold over 30,000 to a single client. 
+-- first we look for employee id of those with sales > 30000, then we use employee table 
+-- to find first and last name using that employee id. 
+SELECT employee.first_name, employee.last_name
+FROM employee
+WHERE employee.emp_id IN (
+    SELECT works_with.emp_id
+    FROM works_with
+    WHERE works_with.total_sales > 30000 
+); 
+
+/* find all clients who are handled by the branch that Michael Scott manages */ 
+-- first we find the branch id given the manager id. Then using that branch id
+-- we select the client name with the associated branch id. 
+SELECT client.client_name
+FROM client
+WHERE client.branch_id = (
+    SELECT branch.branch_id
+    FROM branch
+    WHERE branch.mgr_id = 102
+    LIMIT 1
+); 
